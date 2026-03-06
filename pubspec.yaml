@@ -1,9 +1,9 @@
 name: firebase_query_builder
 description: A fluent, chainable Firestore query builder for Flutter. Write clean, readable, and type-safe Firestore queries with ease.
 version: 0.0.1
-homepage: https://github.com/yourusername/firebase_query_builder
-repository: https://github.com/yourusername/firebase_query_builder
-issue_tracker: https://github.com/yourusername/firebase_query_builder/issues
+homepage: https://github.com/satyaroutray1/firebase_query_builder
+repository: https://github.com/satyaroutray1/firebase_query_builder
+issue_tracker: https://github.com/satyaroutray1/firebase_query_builder/issues
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
