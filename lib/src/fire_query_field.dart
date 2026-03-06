@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'fire_query.dart';
 
 /// Represents a field in a [FireQuery] and provides
@@ -166,6 +165,9 @@ class FireQueryField {
   /// .where('name').startsWith('Jo')
   /// ```
   FireQuery startsWith(String prefix) {
+    if (prefix.isEmpty) {
+      return _parent;
+    }
     final end = prefix.substring(0, prefix.length - 1) +
         String.fromCharCode(prefix.codeUnitAt(prefix.length - 1) + 1);
     return _parent.applyCondition(

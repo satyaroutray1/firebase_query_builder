@@ -21,7 +21,6 @@ import 'exceptions.dart';
 class FireQuery {
   final Query<Map<String, dynamic>> _query;
   final String _collectionPath;
-  int? _pageSize;
 
   FireQuery._(this._query, this._collectionPath);
 
@@ -84,14 +83,17 @@ class FireQuery {
   /// .limit(25)
   /// ```
   FireQuery limit(int count) {
-    if (count <= 0) throw FireQueryException('limit() must be greater than 0.');
+    if (count <= 0) {
+      throw FireQueryException('limit() must be greater than 0.');
+    }
     return FireQuery._(_query.limit(count), _collectionPath);
   }
 
   /// Limits to the last [count] documents (used with orderBy).
   FireQuery limitToLast(int count) {
-    if (count <= 0)
+    if (count <= 0) {
       throw FireQueryException('limitToLast() must be greater than 0.');
+    }
     return FireQuery._(_query.limitToLast(count), _collectionPath);
   }
 
@@ -130,9 +132,9 @@ class FireQuery {
   /// final secondPage = await paginator.nextPage();
   /// ```
   FireQueryPaginator paginate({required int pageSize}) {
-    if (pageSize <= 0)
+    if (pageSize <= 0) {
       throw FireQueryException('pageSize must be greater than 0.');
-    _pageSize = pageSize;
+    }
     return FireQueryPaginator(_query, pageSize);
   }
 
@@ -167,7 +169,9 @@ class FireQuery {
   Future<QueryDocumentSnapshot<Map<String, dynamic>>?> fetchOne() async {
     try {
       final snapshot = await _query.limit(1).get();
-      if (snapshot.docs.isEmpty) return null;
+      if (snapshot.docs.isEmpty) {
+        return null;
+      }
       return snapshot.docs.first;
     } on FirebaseException catch (e) {
       throw FireQueryException('Firestore error: ${e.message}', cause: e);
