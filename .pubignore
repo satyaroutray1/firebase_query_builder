@@ -1,0 +1,6 @@
+# Ignore example app build artifacts and dependencies
+example/.flutter-plugins-dependencies
+example/.dart_tool/
+example/build/
+.idea/
+*.iml
