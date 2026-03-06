@@ -38,8 +38,10 @@ class _ExampleBodyState extends State<ExampleBody> {
   // ─── Example 1: Basic fetch with filters ─────────────────────────
   Future<void> runBasicFetch() async {
     final result = await FireQuery.from('products')
-        .where('category').equals('electronics')
-        .where('price').lessThan(1000)
+        .where('category')
+        .equals('electronics')
+        .where('price')
+        .lessThan(1000)
         .orderBy('price', descending: false)
         .limit(10)
         .fetch();
@@ -53,20 +55,21 @@ class _ExampleBodyState extends State<ExampleBody> {
   // ─── Example 2: fetchOne ─────────────────────────────────────────
   Future<void> runFetchOne() async {
     final doc = await FireQuery.from('users')
-        .where('email').equals('admin@example.com')
+        .where('email')
+        .equals('admin@example.com')
         .fetchOne();
 
     setState(() {
-      _output = doc != null
-          ? 'Found user: ${doc.data()['name']}'
-          : 'User not found.';
+      _output =
+          doc != null ? 'Found user: ${doc.data()['name']}' : 'User not found.';
     });
   }
 
   // ─── Example 3: Pagination ───────────────────────────────────────
   Future<void> runPagination() async {
     final paginator = FireQuery.from('orders')
-        .where('status').equals('pending')
+        .where('status')
+        .equals('pending')
         .orderBy('createdAt', descending: true)
         .paginate(pageSize: 5);
 
@@ -86,7 +89,8 @@ class _ExampleBodyState extends State<ExampleBody> {
   // ─── Example 4: Real-time stream ─────────────────────────────────
   void runStream() {
     FireQuery.from('messages')
-        .where('roomId').equals('room_001')
+        .where('roomId')
+        .equals('room_001')
         .orderBy('sentAt', descending: true)
         .limit(20)
         .stream()
@@ -100,8 +104,8 @@ class _ExampleBodyState extends State<ExampleBody> {
   // ─── Example 5: Count without fetching ───────────────────────────
   Future<void> runCount() async {
     final count = await FireQuery.from('orders')
-        .where('status').whereIn(['pending', 'processing'])
-        .count();
+        .where('status')
+        .whereIn(['pending', 'processing']).count();
 
     setState(() => _output = 'Active orders: $count');
   }
@@ -113,10 +117,14 @@ class _ExampleBodyState extends State<ExampleBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ElevatedButton(onPressed: runBasicFetch, child: const Text('Basic Fetch')),
-          ElevatedButton(onPressed: runFetchOne, child: const Text('Fetch One')),
-          ElevatedButton(onPressed: runPagination, child: const Text('Pagination')),
-          ElevatedButton(onPressed: runStream, child: const Text('Live Stream')),
+          ElevatedButton(
+              onPressed: runBasicFetch, child: const Text('Basic Fetch')),
+          ElevatedButton(
+              onPressed: runFetchOne, child: const Text('Fetch One')),
+          ElevatedButton(
+              onPressed: runPagination, child: const Text('Pagination')),
+          ElevatedButton(
+              onPressed: runStream, child: const Text('Live Stream')),
           ElevatedButton(onPressed: runCount, child: const Text('Count Docs')),
           const SizedBox(height: 24),
           Expanded(

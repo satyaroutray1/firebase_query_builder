@@ -73,7 +73,8 @@ class FireQuery {
   /// .orderBy('createdAt', descending: true)
   /// ```
   FireQuery orderBy(String field, {bool descending = false}) {
-    return FireQuery._(_query.orderBy(field, descending: descending), _collectionPath);
+    return FireQuery._(
+        _query.orderBy(field, descending: descending), _collectionPath);
   }
 
   /// Limits the number of documents returned.
@@ -89,7 +90,8 @@ class FireQuery {
 
   /// Limits to the last [count] documents (used with orderBy).
   FireQuery limitToLast(int count) {
-    if (count <= 0) throw FireQueryException('limitToLast() must be greater than 0.');
+    if (count <= 0)
+      throw FireQueryException('limitToLast() must be greater than 0.');
     return FireQuery._(_query.limitToLast(count), _collectionPath);
   }
 
@@ -128,7 +130,8 @@ class FireQuery {
   /// final secondPage = await paginator.nextPage();
   /// ```
   FireQueryPaginator paginate({required int pageSize}) {
-    if (pageSize <= 0) throw FireQueryException('pageSize must be greater than 0.');
+    if (pageSize <= 0)
+      throw FireQueryException('pageSize must be greater than 0.');
     _pageSize = pageSize;
     return FireQueryPaginator(_query, pageSize);
   }

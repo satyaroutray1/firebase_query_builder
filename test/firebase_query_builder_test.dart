@@ -10,27 +10,60 @@ void main() {
 
     // Seed test data
     final collection = fakeFirestore.collection('products');
-    await collection.add({'name': 'Laptop', 'price': 1200, 'category': 'electronics', 'inStock': true, 'tags': ['tech', 'laptop']});
-    await collection.add({'name': 'Phone', 'price': 800, 'category': 'electronics', 'inStock': true, 'tags': ['tech', 'mobile']});
-    await collection.add({'name': 'Chair', 'price': 250, 'category': 'furniture', 'inStock': false, 'tags': ['home']});
-    await collection.add({'name': 'Desk', 'price': 400, 'category': 'furniture', 'inStock': true, 'tags': ['home', 'office']});
-    await collection.add({'name': 'Headphones', 'price': 150, 'category': 'electronics', 'inStock': true, 'tags': ['tech', 'audio']});
+    await collection.add({
+      'name': 'Laptop',
+      'price': 1200,
+      'category': 'electronics',
+      'inStock': true,
+      'tags': ['tech', 'laptop']
+    });
+    await collection.add({
+      'name': 'Phone',
+      'price': 800,
+      'category': 'electronics',
+      'inStock': true,
+      'tags': ['tech', 'mobile']
+    });
+    await collection.add({
+      'name': 'Chair',
+      'price': 250,
+      'category': 'furniture',
+      'inStock': false,
+      'tags': ['home']
+    });
+    await collection.add({
+      'name': 'Desk',
+      'price': 400,
+      'category': 'furniture',
+      'inStock': true,
+      'tags': ['home', 'office']
+    });
+    await collection.add({
+      'name': 'Headphones',
+      'price': 150,
+      'category': 'electronics',
+      'inStock': true,
+      'tags': ['tech', 'audio']
+    });
   });
 
   group('FireQuery - Basic Fetch', () {
     test('fetches all documents', () async {
-      final result = await FireQuery.from('products', firestore: fakeFirestore).fetch();
+      final result =
+          await FireQuery.from('products', firestore: fakeFirestore).fetch();
       expect(result.count, 5);
     });
 
     test('result.isEmpty returns false when docs exist', () async {
-      final result = await FireQuery.from('products', firestore: fakeFirestore).fetch();
+      final result =
+          await FireQuery.from('products', firestore: fakeFirestore).fetch();
       expect(result.isEmpty, false);
       expect(result.isNotEmpty, true);
     });
 
     test('result.ids returns document IDs', () async {
-      final result = await FireQuery.from('products', firestore: fakeFirestore).fetch();
+      final result =
+          await FireQuery.from('products', firestore: fakeFirestore).fetch();
       expect(result.ids.length, 5);
       expect(result.ids.first, isA<String>());
     });
@@ -39,14 +72,16 @@ void main() {
   group('FireQuery - where().equals()', () {
     test('filters by exact match', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('category').equals('electronics')
+          .where('category')
+          .equals('electronics')
           .fetch();
       expect(result.count, 3);
     });
 
     test('returns empty when no match', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('category').equals('nonexistent')
+          .where('category')
+          .equals('nonexistent')
           .fetch();
       expect(result.isEmpty, true);
     });
@@ -55,7 +90,8 @@ void main() {
   group('FireQuery - where().notEquals()', () {
     test('excludes matching documents', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('category').notEquals('electronics')
+          .where('category')
+          .notEquals('electronics')
           .fetch();
       expect(result.count, 2);
     });
@@ -64,28 +100,32 @@ void main() {
   group('FireQuery - Comparison filters', () {
     test('greaterThan filters correctly', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('price').greaterThan(500)
+          .where('price')
+          .greaterThan(500)
           .fetch();
       expect(result.count, 2); // Laptop 1200, Phone 800
     });
 
     test('lessThan filters correctly', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('price').lessThan(300)
+          .where('price')
+          .lessThan(300)
           .fetch();
       expect(result.count, 2); // Chair 250, Headphones 150
     });
 
     test('lessThanOrEqual filters correctly', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('price').lessThanOrEqual(250)
+          .where('price')
+          .lessThanOrEqual(250)
           .fetch();
       expect(result.count, 2);
     });
 
     test('greaterThanOrEqual filters correctly', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('price').greaterThanOrEqual(400)
+          .where('price')
+          .greaterThanOrEqual(400)
           .fetch();
       expect(result.count, 3); // Laptop, Phone, Desk
     });
@@ -94,15 +134,16 @@ void main() {
   group('FireQuery - Array filters', () {
     test('contains filters by array value', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('tags').contains('tech')
+          .where('tags')
+          .contains('tech')
           .fetch();
       expect(result.count, 3); // Laptop, Phone, Headphones
     });
 
     test('containsAny filters by any array value', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('tags').containsAny(['audio', 'office'])
-          .fetch();
+          .where('tags')
+          .containsAny(['audio', 'office']).fetch();
       expect(result.count, 2); // Headphones, Desk
     });
   });
@@ -110,15 +151,15 @@ void main() {
   group('FireQuery - whereIn / whereNotIn', () {
     test('whereIn filters correctly', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('category').whereIn(['electronics', 'furniture'])
-          .fetch();
+          .where('category')
+          .whereIn(['electronics', 'furniture']).fetch();
       expect(result.count, 5);
     });
 
     test('whereNotIn excludes correctly', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('category').whereNotIn(['furniture'])
-          .fetch();
+          .where('category')
+          .whereNotIn(['furniture']).fetch();
       expect(result.count, 3);
     });
   });
@@ -126,9 +167,12 @@ void main() {
   group('FireQuery - Chained filters', () {
     test('chains multiple conditions', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('category').equals('electronics')
-          .where('inStock').equals(true)
-          .where('price').greaterThan(200)
+          .where('category')
+          .equals('electronics')
+          .where('inStock')
+          .equals(true)
+          .where('price')
+          .greaterThan(200)
           .fetch();
       expect(result.count, 2); // Laptop, Phone
     });
@@ -153,7 +197,8 @@ void main() {
   group('FireQuery - fetchOne()', () {
     test('returns a single document', () async {
       final doc = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('name').equals('Laptop')
+          .where('name')
+          .equals('Laptop')
           .fetchOne();
       expect(doc, isNotNull);
       expect(doc!.data()['name'], 'Laptop');
@@ -161,7 +206,8 @@ void main() {
 
     test('returns null when not found', () async {
       final doc = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('name').equals('NonExistent')
+          .where('name')
+          .equals('NonExistent')
           .fetchOne();
       expect(doc, isNull);
     });
@@ -170,7 +216,8 @@ void main() {
   group('FireQuery - mapTo()', () {
     test('maps documents to typed objects', () async {
       final result = await FireQuery.from('products', firestore: fakeFirestore)
-          .where('category').equals('electronics')
+          .where('category')
+          .equals('electronics')
           .fetch();
 
       final names = result.mapTo((doc) => doc.data()['name'] as String);
@@ -181,7 +228,8 @@ void main() {
   group('FireQuery - stream()', () {
     test('emits results as a stream', () async {
       final stream = FireQuery.from('products', firestore: fakeFirestore)
-          .where('inStock').equals(true)
+          .where('inStock')
+          .equals(true)
           .stream();
 
       final result = await stream.first;

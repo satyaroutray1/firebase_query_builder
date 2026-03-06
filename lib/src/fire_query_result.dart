@@ -35,7 +35,8 @@ class FireQueryResult {
   /// ```dart
   /// final users = result.mapTo((doc) => User.fromMap(doc.data()));
   /// ```
-  List<T> mapTo<T>(T Function(QueryDocumentSnapshot<Map<String, dynamic>> doc) mapper) {
+  List<T> mapTo<T>(
+      T Function(QueryDocumentSnapshot<Map<String, dynamic>> doc) mapper) {
     return _snapshot.docs.map(mapper).toList();
   }
 
