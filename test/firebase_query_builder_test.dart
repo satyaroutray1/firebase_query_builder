@@ -240,6 +240,7 @@ void main() {
   group('FireQuery - Pagination', () {
     test('paginates correctly', () async {
       final paginator = FireQuery.from('products', firestore: fakeFirestore)
+          .orderBy('name')
           .paginate(pageSize: 2);
 
       final page1 = await paginator.nextPage();
@@ -257,6 +258,7 @@ void main() {
 
     test('returns null after all pages exhausted', () async {
       final paginator = FireQuery.from('products', firestore: fakeFirestore)
+          .orderBy('name')
           .paginate(pageSize: 10);
 
       await paginator.nextPage();
@@ -268,6 +270,7 @@ void main() {
 
     test('reset() restarts pagination', () async {
       final paginator = FireQuery.from('products', firestore: fakeFirestore)
+          .orderBy('name')
           .paginate(pageSize: 10);
 
       await paginator.nextPage();
@@ -280,6 +283,7 @@ void main() {
 
     test('fetchAll() returns all documents', () async {
       final paginator = FireQuery.from('products', firestore: fakeFirestore)
+          .orderBy('name')
           .paginate(pageSize: 2);
 
       final all = await paginator.fetchAll();
